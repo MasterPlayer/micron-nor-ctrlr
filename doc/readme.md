@@ -330,8 +330,174 @@ ERASE | 32768 | 0.080 | 0.123 | 0.076
 ERASE | 4096 | 0.017 | 0.023 | 0.016 
 PROGRAM | 256 | 0.000190 | 0.0002 | 0.0001
 
+## 6. Использование
 
-## 6. Лог изменений
+Представленный ниже код демонстрирует использование компонента axis_micron_nor_ctrlr_x4 в составе некоторого небольшого проекта. 
+Демонстрируется использование совместно со STARTUPE и без него. 
+Часть кода взята с рабочего проекта под Kintex UltraScale 
+
+```
+`timescale 1ns / 1ps
+
+module nor_flash_top #(
+    parameter FLASH_COUNT       = 2
+) (
+    output logic             NOR_CS0      ,
+    output                   NOR_RST      ,
+    output                   NOR_CLK      ,
+    inout        [ 3:0]      NOR_D         
+);
+
+    logic clk     ;
+    logic reset   ;
+    logic slow_clk;
+
+    logic [FLASH_COUNT-1:0][ 7:0] flash_s_axis_cmd       ;
+    logic [FLASH_COUNT-1:0][31:0] flash_s_axis_cmd_tsize ;
+    logic [FLASH_COUNT-1:0][31:0] flash_s_axis_cmd_taddr ;
+    logic [FLASH_COUNT-1:0]       flash_s_axis_cmd_tvalid;
+    logic [FLASH_COUNT-1:0]       flash_s_axis_cmd_tready;
+
+    logic [FLASH_COUNT-1:0][ 7:0] flash_s_axis_tdata     ;
+    logic [FLASH_COUNT-1:0]       flash_s_axis_tvalid    ;
+    logic [FLASH_COUNT-1:0]       flash_s_axis_tready    ;
+    logic [FLASH_COUNT-1:0]       flash_s_axis_tlast     ;
+
+    logic [FLASH_COUNT-1:0][ 7:0] flash_m_axis_tdata     ;
+    logic [FLASH_COUNT-1:0]       flash_m_axis_tvalid    ;
+    logic [FLASH_COUNT-1:0]       flash_m_axis_tready    ;
+    logic [FLASH_COUNT-1:0]       flash_m_axis_tlast     ;
+
+    logic [FLASH_COUNT-1:0][3:0] dq_i;
+    logic [FLASH_COUNT-1:0][3:0] dq_t;
+    logic [FLASH_COUNT-1:0][3:0] dq_o;
+
+    logic [FLASH_COUNT-1:0][7:0] flash_status      ;
+    logic [FLASH_COUNT-1:0]      flash_status_valid;
+    logic [FLASH_COUNT-1:0]      flash_busy        ;
+
+    logic flash_clk;
+    logic flash_cs0;
+
+    axis_micron_nor_ctrlr_x4 #(
+        .MODE       ("STARTUPE"),
+        .ASYNC      (1'b1      ),
+        .SWAP_NIBBLE(1'b0      ),
+        .DBG_ENABLE (1'b0      )
+    ) axis_micron_nor_ctrlr_x4_startupe (
+        .S_AXIS_CLK        (clk                       ),
+        .S_AXIS_RESET      (reset                     ),
+        .S_AXIS_CMD        (flash_s_axis_cmd[0]       ),
+        .S_AXIS_CMD_TSIZE  (flash_s_axis_cmd_tsize[0] ),
+        .S_AXIS_CMD_TADDR  (flash_s_axis_cmd_taddr[0] ),
+        .S_AXIS_CMD_TVALID (flash_s_axis_cmd_tvalid[0]),
+        .S_AXIS_CMD_TREADY (flash_s_axis_cmd_tready[0]),
+        
+        .S_AXIS_TDATA      (flash_s_axis_tdata[0]     ),
+        .S_AXIS_TVALID     (flash_s_axis_tvalid[0]    ),
+        .S_AXIS_TREADY     (flash_s_axis_tready[0]    ),
+        .S_AXIS_TLAST      (flash_s_axis_tlast[0]     ),
+        
+        .M_AXIS_TDATA      (flash_m_axis_tdata[0]     ),
+        .M_AXIS_TVALID     (flash_m_axis_tvalid[0]    ),
+        .M_AXIS_TREADY     (flash_m_axis_tready[0]    ),
+        .M_AXIS_TLAST      (flash_m_axis_tlast[0]     ),
+        
+        .SPI_CLK           (slow_clk                  ),
+        
+        .FLASH_STATUS      (flash_status[0]           ),
+        .FLASH_STATUS_VALID(flash_status_valid[0]     ),
+        
+        .BUSY              (flash_busy[0]             ),
+        
+        .C                 (flash_clk                 ),
+        .RESET_OUT         (                          ),
+        .DQ_I              (dq_i[0]                   ),
+        .DQ_T              (dq_t[0]                   ),
+        .DQ_O              (dq_o[0]                   ),
+        .S                 (flash_cs0                 )
+    );
+
+    axis_micron_nor_ctrlr_x4 #(
+        .MODE       ("DIRECT"),
+        .ASYNC      (1'b1    ),
+        .SWAP_NIBBLE(1'b0    ),
+        .DBG_ENABLE (1'b0    )
+    ) axis_micron_nor_ctrlr_x4_direct (
+        .S_AXIS_CLK        (clk                   ),
+        .S_AXIS_RESET      (reset                 ),
+        .S_AXIS_CMD        (s_axis_cmd[1]         ),
+        .S_AXIS_CMD_TSIZE  (s_axis_cmd_tsize[1]   ),
+        .S_AXIS_CMD_TADDR  (s_axis_cmd_taddr[1]   ),
+        .S_AXIS_CMD_TVALID (s_axis_cmd_tvalid[1]  ),
+        .S_AXIS_CMD_TREADY (s_axis_cmd_tready[1]  ),
+        
+        .S_AXIS_TDATA      (flash_s_axis_tdata[1] ),
+        .S_AXIS_TVALID     (flash_s_axis_tvalid[1]),
+        .S_AXIS_TREADY     (flash_s_axis_tready[1]),
+        .S_AXIS_TLAST      (flash_s_axis_tlast[1] ),
+        
+        .M_AXIS_TDATA      (flash_m_axis_tdata[1] ),
+        .M_AXIS_TVALID     (flash_m_axis_tvalid[1]),
+        .M_AXIS_TREADY     (flash_m_axis_tready[1]),
+        .M_AXIS_TLAST      (flash_m_axis_tlast[1] ),
+        
+        .SPI_CLK           (slow_clk              ),
+        
+        .FLASH_STATUS      (flash_status[1]       ),
+        .FLASH_STATUS_VALID(flash_status_valid[1] ),
+        
+        .BUSY              (flash_busy[1]         ),
+        
+        .C                 (NOR_CLK               ),
+        .RESET_OUT         (NOR_RST               ),
+        .DQ_I              (dq_i[1]               ),
+        .DQ_T              (dq_t[1]               ),
+        .DQ_O              (dq_o[1]               ),
+        .S                 (NOR_CS0               )
+    );
+
+    for (genvar dq_index = 0; dq_index < 4; dq_index++) begin 
+
+        IOBUF iobuf_nor_inst (
+            .O (dq_i[1][dq_index]), // 1-bit output: Buffer output
+            .I (dq_o[1][dq_index]), // 1-bit input: Buffer input
+            .IO(NOR_D[dq_index]  ), // 1-bit inout: Buffer inout (connect directly to top-level port)
+            .T (dq_t[1][dq_index])  // 1-bit input: 3-state enable input
+        );
+
+    end 
+
+    STARTUPE3 #(
+        .PROG_USR     ("FALSE"),
+        .SIM_CCLK_FREQ(6.6    )
+    ) startupe3_inst (
+        .CFGCLK   (         ),
+        .CFGMCLK  (         ),
+        .DI       (dq_i[0]  ),
+        .EOS      (         ),
+        .PREQ     (         ),
+        .DO       (dq_o[0]  ),
+        .DTS      (dq_t[0]  ),
+        .FCSBO    (flash_cs0),
+        .FCSBTS   (1'b0     ),
+        .GSR      (1'b0     ),
+        .GTS      (1'b0     ),
+        .KEYCLEARB(1'b1     ),
+        .PACK     (1'b1     ),
+        .USRCCLKO (flash_clk),
+        .USRCCLKTS(1'b0     ),
+        .USRDONEO (1'b1     ),
+        .USRDONETS(1'b0     )
+    );
+
+
+endmodule
+
+```
+
+
+## 7. Лог изменений
 
 **1. 03.05.2021 : v1.0 - первая версия**
 Добавлен компонент и документация к нему с рисунками и диаграммами
