@@ -17,10 +17,9 @@
 Стирание 32 КБайт | 0x5c | Стирание сабсектора 32 КБайт
 Стирание чипа | 0x4c | Стирание 512 МБит памяти
 
+![axis_micron_nor_ctrlr_x4_struct](https://user-images.githubusercontent.com/45385195/177000750-83cf0ce1-8766-4852-a02e-7c30b84a6694.png)
 
-![axis_micron_nor_ctrlr_x4_struct][axis_micron_nor_ctrlr_x4_struct_link]
 
-[axis_micron_nor_ctrlr_x4_struct_link]:https://github.com/MasterPlayer/xilinx-vhdl/blob/master/axis_infrastructure/axis_micron_nor_ctrlr_x4/documentation/axis_micron_nor_ctrlr_x4_fsm_init.png
 
 ## generic-параметры
 Параметр | Тип | Диапазон значений | описание
@@ -60,7 +59,7 @@ M_AXIS_TREADY | in | 1 | сигнал готовности к приему да�
 
 ### 1.2. Сигналы тактирования и сброса 
 
-При ASYNC = true сигналы входы сигналов S_AXIS_CLK, SPI_CLK имеют общий источник
+При `ASYNC = true` сигналы входы сигналов S_AXIS_CLK, SPI_CLK имеют общий источник
 
 Название | Направление | Разрядность | Назначение
 ---------|-------------|-------------|-----------
@@ -121,16 +120,11 @@ S | out | 1 | сигнал разрешения работы FLASH (CHIP_SELECT)
 
 ### 2.1 Подключение компонента при MODE=STARTUPE
 
-![axis_micron_nor_ctrlr_x4_startupe][axis_micron_nor_ctrlr_x4_startupe_link]
-
-[axis_micron_nor_ctrlr_x4_startupe_link]:https://github.com/MasterPlayer/xilinx-vhdl/blob/master/axis_infrastructure/axis_micron_nor_ctrlr_x4/documentation/axis_micron_nor_ctrlr_x4_startupe.png
+![axis_micron_nor_ctrlr_x4_startupe](https://user-images.githubusercontent.com/45385195/177000713-61488b3f-28f7-4526-86a1-e8251dffa0d3.png)
 
 ### 2.2 Подключение компонента при MODE=DIRECT
 
-![axis_micron_nor_ctrlr_x4_direct][axis_micron_nor_ctrlr_x4_direct_link]
-
-[axis_micron_nor_ctrlr_x4_direct_link]:https://github.com/MasterPlayer/xilinx-vhdl/blob/master/axis_infrastructure/axis_micron_nor_ctrlr_x4/documentation/axis_micron_nor_ctrlr_x4_direct.png
-
+![axis_micron_nor_ctrlr_x4_direct](https://user-images.githubusercontent.com/45385195/177000728-752db03c-c44a-42b7-b653-2ef54ab66198.png)
 
 ## 3. Конечный автомат
 
@@ -138,9 +132,7 @@ S | out | 1 | сигнал разрешения работы FLASH (CHIP_SELECT)
 
 ### 3.1 Процесс инициализации 
 
-![axis_micron_nor_ctrlr_x4_fsm_init][axis_micron_nor_ctrlr_x4_fsm_init_link]
-
-[axis_micron_nor_ctrlr_x4_fsm_init_link]:https://github.com/MasterPlayer/xilinx-vhdl/blob/master/axis_infrastructure/axis_micron_nor_ctrlr_x4/documentation/axis_micron_nor_ctrlr_x4_fsm_init.png
+![axis_micron_nor_ctrlr_x4_fsm_init](https://user-images.githubusercontent.com/45385195/177000767-8de47547-5e30-40ac-8e2f-489caed4ce7b.png)
 
 #### 3.1.1 Состояния конечного автомата процесса инициализации
 
@@ -158,16 +150,11 @@ IDLE_ST | Ничего не делаем | IDLE_ST | Не представлен
 
 #### 3.1.2. Диаграмма процесса инициализации
 
-![axis_micron_nor_ctrlr_x4_init][axis_micron_nor_ctrlr_x4_init_link]
-
-[axis_micron_nor_ctrlr_x4_init_link]:https://github.com/MasterPlayer/xilinx-vhdl/blob/master/axis_infrastructure/axis_micron_nor_ctrlr_x4/documentation/axis_micron_nor_ctrlr_x4_init.png
-
+![axis_micron_nor_ctrlr_x4_init](https://user-images.githubusercontent.com/45385195/177000782-f352dd45-22aa-48d7-9c4d-b379ce462398.png)
 
 ### 3.2 Операция записи 
 
-![axis_micron_nor_ctrlr_x4_fsm_program][axis_micron_nor_ctrlr_x4_fsm_program_link]
-
-[axis_micron_nor_ctrlr_x4_fsm_program_link]:https://github.com/MasterPlayer/xilinx-vhdl/blob/master/axis_infrastructure/axis_micron_nor_ctrlr_x4/documentation/axis_micron_nor_ctrlr_x4_fsm_program.png
+![axis_micron_nor_ctrlr_x4_fsm_program](https://user-images.githubusercontent.com/45385195/177000789-1e18919e-c1da-4418-9a71-b8b7524aad4c.png)
 
 #### 3.2.1. Состояния конечного автомата операции записи
 
@@ -191,21 +178,15 @@ FINALIZE_ST | Завершаем команду | IDLE_ST | Безусловны
 
 Начало
 
-![axis_micron_nor_ctrlr_x4_programstart][axis_micron_nor_ctrlr_x4_programstart_link]
-
-[axis_micron_nor_ctrlr_x4_programstart_link]:https://github.com/MasterPlayer/xilinx-vhdl/blob/master/axis_infrastructure/axis_micron_nor_ctrlr_x4/documentation/axis_micron_nor_ctrlr_x4_programstart.png
+![axis_micron_nor_ctrlr_x4_programstart](https://user-images.githubusercontent.com/45385195/177000792-e3c68291-fa4b-4e92-a0ec-17fd75b4bd00.png)
 
 Конец
 
-![axis_micron_nor_ctrlr_x4_programend][axis_micron_nor_ctrlr_x4_programend_link]
-
-[axis_micron_nor_ctrlr_x4_programend_link]:https://github.com/MasterPlayer/xilinx-vhdl/blob/master/axis_infrastructure/axis_micron_nor_ctrlr_x4/documentation/axis_micron_nor_ctrlr_x4_programend.png
+![axis_micron_nor_ctrlr_x4_programend](https://user-images.githubusercontent.com/45385195/177000795-fc0d98b3-5f0b-4b43-935a-6b061eed4048.png)
 
 ### 3.3 Операция стирания
 
-![axis_micron_nor_ctrlr_x4_fsm_erase][axis_micron_nor_ctrlr_x4_fsm_erase_link]
-
-[axis_micron_nor_ctrlr_x4_fsm_erase_link]:https://github.com/MasterPlayer/xilinx-vhdl/blob/master/axis_infrastructure/axis_micron_nor_ctrlr_x4/documentation/axis_micron_nor_ctrlr_x4_fsm_erase.png
+![axis_micron_nor_ctrlr_x4_fsm_erase](https://user-images.githubusercontent.com/45385195/177000800-32c6c34c-9eed-4027-8bec-8dab0da7fe13.png)
 
 #### 3.3.1. Состояния конечного автомата операции стирания 
 
@@ -229,9 +210,7 @@ FINALIZE_ST | Завершаем команду | IDLE_ST | Безусловны
 
 Внимание: состояние READ_DATA_WAIT_ABILITY не будут отрабатывать корректно, необходимо внесение изменений
 
-![axis_micron_nor_ctrlr_x4_fsm_read][axis_micron_nor_ctrlr_x4_fsm_read_link]
-
-[axis_micron_nor_ctrlr_x4_fsm_read_link]:https://github.com/MasterPlayer/xilinx-vhdl/blob/master/axis_infrastructure/axis_micron_nor_ctrlr_x4/documentation/axis_micron_nor_ctrlr_x4_fsm_read.png
+![axis_micron_nor_ctrlr_x4_fsm_read](https://user-images.githubusercontent.com/45385195/177000802-607f9890-1a0c-4eaa-bf08-2131d50110e9.png)
 
 Текущее состояние | Действия | Следующее состояние | Условие перехода
 ------------------|----------|---------------------|-----------------
@@ -248,20 +227,18 @@ FINALIZE_ST | Завершаем команду | IDLE_ST | Безусловны
 
 Возникает когда записанные данные не содержат в своем составе команды из списка
 
-![axis_micron_nor_ctrlr_x4_fsm_nocmd][axis_micron_nor_ctrlr_x4_fsm_nocmd_link]
-
-[axis_micron_nor_ctrlr_x4_fsm_nocmd_link]:https://github.com/MasterPlayer/xilinx-vhdl/blob/master/axis_infrastructure/axis_micron_nor_ctrlr_x4/documentation/axis_micron_nor_ctrlr_x4_fsm_nocmd.png
+![axis_micron_nor_ctrlr_x4_fsm_nocmd](https://user-images.githubusercontent.com/45385195/177000807-1048e850-b9a2-4d44-9626-73fc31a0e7eb.png)
 
 ## 4. Необходимые внешние компоненты 
 
 Название компонент | Описание
 -------------------|---------
-[fifo_cmd_sync_xpm](https://github.com/MasterPlayer/xilinx-vhdl/blob/master/fifo_parametrized/ffifo_cmd_sync_xpm/fifo_cmd_sync_xpm.vhd) | Входная очередь команд, используется когда `ASYNC=false`
-[fifo_cmd_async_xpm](https://github.com/MasterPlayer/xilinx-vhdl/blob/master/fifo_parametrized/fifo_cmd_async_xpm/fifo_cmd_async_xpm.vhd) | Входная очередь команд, используется когда `ASYNC=true`
-[fifo_in_sync_xpm](https://github.com/MasterPlayer/xilinx-vhdl/blob/master/fifo_parametrized/fififo_in_sync_xpm/fifo_in_sync_xpm.vhd) | Входная очередь данных, используется при выполнении операции записи на FLASH когда `ASYNC=false`
-[fifo_in_async_xpm](https://github.com/MasterPlayer/xilinx-vhdl/blob/master/fifo_parametrized/ffifo_in_async_xpm/fifo_in_async_xpm.vhd) | Входная очередь данных, используется при выполнении операции записи на FLASH когда `ASYNC=true`
-[fifo_out_sync_xpm](https://github.com/MasterPlayer/xilinx-vhdl/blob/master/fifo_parametrized/ffifo_out_sync_xpm/fifo_out_sync_xpm.vhd) | Выходная очередь данных, используется при чтении данных с FLASH когда `ASYNC=false`
-[fifo_out_async_xpm](https://github.com/MasterPlayer/xilinx-vhdl/blob/master/fifo_parametrized/fifo_out_async_xpm/fifo_out_async_xpm.vhd) | Выходная очередь данных, используется при чтении данных с FLASH когда `ASYNC=true`
+[fifo_cmd_sync_xpm]() | Входная очередь команд, используется когда `ASYNC=false`
+[fifo_cmd_async_xpm]() | Входная очередь команд, используется когда `ASYNC=true`
+[fifo_in_sync_xpm]() | Входная очередь данных, используется при выполнении операции записи на FLASH когда `ASYNC=false`
+[fifo_in_async_xpm]() | Входная очередь данных, используется при выполнении операции записи на FLASH когда `ASYNC=true`
+[fifo_out_sync_xpm]() | Выходная очередь данных, используется при чтении данных с FLASH когда `ASYNC=false`
+[fifo_out_async_xpm]() | Выходная очередь данных, используется при чтении данных с FLASH когда `ASYNC=true`
 
 ## 5. Тестирование
 
@@ -298,4 +275,8 @@ PROGRAM | 256 | 0.000190 | 0.0002 | 0.0001
 
 **1. 03.05.2021 : v1.0 - первая версия**
 Добавлен компонент и документация к нему с рисунками и диаграммами
+**2. 02.07.2022 : v1.1 - Обновление описания, добавлен модуль**
+- Добавлен модуль восстановления работоспособности Flash, если она заблокирована (доступ к ней со стороны Vivado недоступен, так как Vivado не может получить сигнатуру устройства
+- Обновление описания
+
 
