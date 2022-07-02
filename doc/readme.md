@@ -1,3 +1,63 @@
+# micron_nor_rescue
+
+Компонент для восстановления доступа к Flash-памяти MT25Q, если доступ к ней был заблокирован. Это может проявляться, когда в процессе программирования или выполнения каких-либо операций со стороны среды Vivado возникают ошибки, и в неволатильный регистр устанавливается режим, не совместимый с Vivado по умолчанию. В таком случае, возможность доступа к памяти теряется, и необходимо произвести сброс к настройкам по умолчанию, чтобы позволить среде вновь взаимодействовать с памятью Flash. 
+
+Компонент генерирует последовательности, описанные в разделе "Power Loss and Interface Rescue", и поддерживает подключение через примитив или напрямую. 
+- При подключении через примитив STARTUPE необходимо установить режим `MODE = "STARTUPE"`.
+- При подключении напрямую установить режим `MODE = "DIRECT"` 
+
+Примечание: Примитив не встроен в компонент, его использование и подключение соединений осуществляется вне компонента. 
+
+Пример подключения компонента через примитив (Kintex UltraScale):
+
+```
+    micron_nor_rescue micron_nor_rescue_inst (
+        .CLK      (clk_100    ), // Stable clock 
+        .RESET    (reset_100  ), // Reset signal 
+        .START    (start      ), 
+        .C        (flash_clk  ), // signal from component to primitive STARTUP for using as clock
+        .RESET_OUT(           ), // signal reset from component to FLASH component, unused when MODE = "STARTUPE"
+        .DQ_I     (dq_i       ), // signal to/from startupe primitive
+        .DQ_T     (dq_t       ), // signal to/from startupe primitive
+        .DQ_O     (dq_o       ), // signal to/from startupe primitive
+        .S        (flash_cs0  )  // chip select to FCS_B port in startupe 
+    );
+
+    STARTUPE3 #(
+        .PROG_USR     ("FALSE"), // Activate program event security feature. Requires encrypted bitstreams.
+        .SIM_CCLK_FREQ(6.6    )  // Set the Configuration Clock Frequency (ns) for simulation
+    ) startupe3_inst (
+        .CFGCLK   (         ), // 1-bit output: Configuration main clock output
+        .CFGMCLK  (         ), // 1-bit output: Configuration internal oscillator clock output
+        .DI       (dq_i[0]  ), // 4-bit output: Allow receiving on the D input pin
+        .EOS      (         ), // 1-bit output: Active-High output signal indicating the End Of Startup
+        .PREQ     (         ), // 1-bit output: PROGRAM request to fabric output
+        .DO       (dq_o[0]  ), // 4-bit input: Allows control of the D pin output
+        .DTS      (dq_t[0]  ), // 4-bit input: Allows tristate of the D pin
+        .FCSBO    (flash_cs0), // 1-bit input: Controls the FCS_B pin for flash access
+        .FCSBTS   (1'b0     ), // 1-bit input: Tristate the FCS_B pin
+        .GSR      (1'b0     ), // 1-bit input: Global Set/Reset input (GSR cannot be used for the port)
+        .GTS      (1'b0     ), // 1-bit input: Global 3-state input (GTS cannot be used for the port name)
+        .KEYCLEARB(1'b1     ), // 1-bit input: Clear AES Decrypter Key input from Battery-Backed RAM (BBRAM)
+        .PACK     (1'b1     ), // 1-bit input: PROGRAM acknowledge input
+        .USRCCLKO (flash_clk), // 1-bit input: User CCLK input
+        .USRCCLKTS(1'b0     ), // 1-bit input: User CCLK 3-state enable input
+        .USRDONEO (1'b1     ), // 1-bit input: User DONE pin output control
+        .USRDONETS(1'b0     )  // 1-bit input: User DONE 3-state enable output
+    );
+```
+
+Порядок работы с компонентом : 
+1. Включить питание FPGA
+2. Прошить FPGA с прошивкой, содержащей компонент micron_nor_rescue
+3. Подать сигнал START
+4. Выключить питание
+5. Включить питание
+6. Прошить FPGA через среду разработки, или прошивкой, обеспечивающей взаимодействие с FLASH и проверить корректность
+
+В случае отсутствия изменений, попробовать действия 1 - 5 еще раз
+
+
 # axis_micron_nor_ctrlr_x4
 
 Компонент для работы с флеш-памятью Micron NOR MT25Q с поддержкой режима QuadSPI по четырем битам двунаправленной шины. Поддерживает операции чтения, программирования, стирания, запроса статуса. Поддерживает различные варианты стирания памяти. Работает на командах из мануала на флеш-память MT25Q. 
