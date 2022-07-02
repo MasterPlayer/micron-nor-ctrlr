@@ -233,12 +233,12 @@ FINALIZE_ST | Завершаем команду | IDLE_ST | Безусловны
 
 Название компонент | Описание
 -------------------|---------
-[fifo_cmd_sync_xpm]() | Входная очередь команд, используется когда `ASYNC=false`
-[fifo_cmd_async_xpm]() | Входная очередь команд, используется когда `ASYNC=true`
-[fifo_in_sync_xpm]() | Входная очередь данных, используется при выполнении операции записи на FLASH когда `ASYNC=false`
-[fifo_in_async_xpm]() | Входная очередь данных, используется при выполнении операции записи на FLASH когда `ASYNC=true`
-[fifo_out_sync_xpm]() | Выходная очередь данных, используется при чтении данных с FLASH когда `ASYNC=false`
-[fifo_out_async_xpm]() | Выходная очередь данных, используется при чтении данных с FLASH когда `ASYNC=true`
+[fifo_cmd_sync_xpm](https://github.com/MasterPlayer/micron-nor-ctrlr/blob/main/src_hw/fifo_cmd_sync_xpm.vhd) | Входная очередь команд, используется когда `ASYNC=false`
+[fifo_cmd_async_xpm](https://github.com/MasterPlayer/micron-nor-ctrlr/blob/main/src_hw/fifo_cmd_async_xpm.vhd) | Входная очередь команд, используется когда `ASYNC=true`
+[fifo_in_sync_xpm](https://github.com/MasterPlayer/micron-nor-ctrlr/blob/main/src_hw/fifo_in_sync_xpm.vhd) | Входная очередь данных, используется при выполнении операции записи на FLASH когда `ASYNC=false`
+[fifo_in_async_xpm](https://github.com/MasterPlayer/micron-nor-ctrlr/blob/main/src_hw/fifo_in_async_xpm.vhd) | Входная очередь данных, используется при выполнении операции записи на FLASH когда `ASYNC=true`
+[fifo_out_sync_xpm](https://github.com/MasterPlayer/micron-nor-ctrlr/blob/main/src_hw/fifo_out_sync_xpm.vhd) | Выходная очередь данных, используется при чтении данных с FLASH когда `ASYNC=false`
+[fifo_out_async_xpm](https://github.com/MasterPlayer/micron-nor-ctrlr/blob/main/src_hw/fifo_out_async_xpm.vhd) | Выходная очередь данных, используется при чтении данных с FLASH когда `ASYNC=true`
 
 ## 5. Тестирование
 
