@@ -1,3 +1,6 @@
+Note : 
+More information holded in [documentation](https://github.com/MasterPlayer/micron-nor-ctrlr/tree/main/doc) catalog
+
 [micron-nor-ctrlr](https://github.com/MasterPlayer/micron-nor-ctrlr/blob/main/src_hw/axis_micron_nor_ctrlr_x4.vhd)
  
  Micron Flash interface with support x4 data width and supports AXI-Stream interface 
