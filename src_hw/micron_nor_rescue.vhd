@@ -13,18 +13,12 @@ entity micron_nor_rescue is
     port(
         CLK                 :   in      std_logic                           ;
         RESET               :   in      std_logic                           ;
-
         START               :   in      std_Logic                           ;
-        PAUSE               :   in      std_Logic_vector ( 15 downto 0 )    ;
-
         C                   :   out     std_logic                           ;
-
         RESET_OUT           :   out     std_logic                           ;
-
         DQ_I                :   in      std_Logic_Vector ( 3 downto 0 )     ;
         DQ_T                :   out     std_Logic_Vector ( 3 downto 0 )     ;
         DQ_O                :   out     std_Logic_Vector ( 3 downto 0 )     ;
-
         S                   :   out     std_logic                           
     );
 end micron_nor_rescue;
